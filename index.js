@@ -47,9 +47,7 @@ Use the higher-order function called getYears to do the following:
 function getYears(array, getFinalscb) {
     /* code here */
     // Map over the results of getFinals to get all the years
-    const finals = getFinalscb(array);
-    const years = finals.map(item => (item['Year']));
-    return years;
+    return getFinalscb(array).map(item => (item['Year']));
 }
 
 console.log('Task 3:', getYears(fifaData, getFinals));
@@ -67,15 +65,13 @@ function getWinners(array, getFinalscb) {
     /* code here */
     // Use map
     // Use a conditional if home team goals > away team goals then we want the home team name, else we want the away team name
-    const finals = getFinalscb(array);
-    const winner = finals.map(item => {
+    return getFinalscb(array).map(item => {
         if(item['Home Team Goals'] > item['Away Team Goals']) {
             return item['Home Team Name'];
         } else {
             return item['Away Team Name'];
         }
     });
-    return winner;
 }
 
 console.log('Task 4:', getWinners(fifaData, getFinals));
@@ -94,7 +90,14 @@ hint: the strings returned need to exactly match the string in step 5.
 function getWinnersByYear(array, getFinalscb, getYearscb, getWinnerscb) {
     /* code here */
     // Use map - I would map over 1 array and grab each item and then I would use the index to grab the item in the other array
+    const winners = getWinnerscb(array, getFinalscb);
+    const years = getYearscb(array, getFinalscb);
 
+
+    const winnersByYear = winners.map((item, index) => {
+        return `In ${years[index]}, ${item} won the world cup!`;
+    });
+    return winnersByYear;
 }
 
 console.log('Task 5:', getWinnersByYear(fifaData, getFinals, getYears, getWinners));
@@ -114,14 +117,15 @@ function getAverageGoals(getFinalscb) {
    // use .reduce to add up all the goals of the home team and away team
 //    then I would divide that number by the length of the array
 // round to 2 decimal places ** hint - look up .toFixed()
-
+    const averageGoals = getFinalscb.reduce((acc, item) =>  (acc + item['Home Team Goals'] + item['Away Team Goals']), 0);
+    return (averageGoals / getFinalscb.length).toFixed(2);
 }
 
 
 
 // getAverageGoals(fetFinals(fifaData))
 
-console.log('Task 6:');
+console.log('Task 6:', getAverageGoals(getFinals(fifaData)));
 
 
 
@@ -135,10 +139,9 @@ Create a function called `getCountryWins` that takes the parameters `data` and `
 Hint: Investigate your data to find "team initials"!
 Hint: use `.reduce` */
 
-function getCountryWins(/* code here */) {
+function getCountryWins(data, teamInitials) {
 
     /* code here */
-
 }
 
 
